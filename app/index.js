@@ -34,6 +34,12 @@ var FrameGenerator = yeoman.generators.Base.extend({
 
     // Copy scripts
     this.copy('scripts/main.js', 'app/scripts/main.js');
+    this.copy('scripts/config/routes.js', 'app/scripts/config/routes.js');
+    this.copy('scripts/controllers/index.js', 'app/scripts/controllers/index.js');
+    this.copy('scripts/views/index.js', 'app/scripts/views/index.js');
+
+    // Copy templates
+    this.copy('templates/index.hbs', 'app/templates/index.hbs');
   },
 
   projectfiles: function () {

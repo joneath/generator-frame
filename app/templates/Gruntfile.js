@@ -1,5 +1,6 @@
 // Generated on <%= (new Date).toISOString().split('T')[0] %> using <%= pkg.name %> <%= pkg.version %>
 'use strict';
+var util = require('util');
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({port: LIVERELOAD_PORT});
 var mountFolder = function (connect, dir) {
@@ -23,6 +24,19 @@ module.exports = function (grunt) {
       app: 'app',
       dist: 'dist'
   };
+
+  // Takes grunt-browserify aliasMappings config and converts it into an alias array
+  function aliasMappingsToAliasArray(aliasMappings) {
+    var aliasArray = [];
+    var aliases = util.isArray(aliasMappings) ? aliasMappings : [aliasMappings];
+    aliases.forEach(function (alias) {
+      grunt.file.expandMapping(alias.src, alias.dest, {cwd: alias.cwd}).forEach(function(file) {
+        var expose = file.dest.substr(0, file.dest.lastIndexOf('.'));
+        aliasArray.push('./' + file.src[0] + ':' + expose);
+      });
+    });
+    return aliasArray;
+  }
 
   grunt.initConfig({
     yeoman: yeomanConfig,
@@ -166,6 +180,20 @@ module.exports = function (grunt) {
         files: {
           '.tmp/scripts/main.js': ['<%%= yeoman.app %>/scripts/main.js']
         }
+      },
+      options: {
+        alias: aliasMappingsToAliasArray(
+          [{
+            cwd: 'app/scripts/controllers',
+            src: ['**/*.js'],
+            dest: 'controllers'
+          },
+          {
+            cwd: 'app/scripts/views',
+            src: ['**/*.js'],
+            dest: 'views'
+          }]
+        )
       }
     },
     // not used since Uglify task does concat,
@@ -226,14 +254,17 @@ module.exports = function (grunt) {
     concurrent: {
       server: [
         'handlebars',
+        'browserify',
         'compass'
       ],
       test: [
         'handlebars',
+        'browserify',
         'compass'
       ],
       dist: [
         'handlebars',
+        'browserify',
         'compass:dist'
       ]
     }
