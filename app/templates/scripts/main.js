@@ -3,5 +3,8 @@
 
   var routes = require('./config/routes');
 
-  window.App = new Frame.App({routes: routes});
+  window.App = new Frame.App({
+    templates: JST,
+    routes: routes
+  });
 }());
