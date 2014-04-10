@@ -1,10 +1,10 @@
 (function() {
   'use strict';
 
-  var routes = require('./config/routes');
+  require('./utils/helpers');
 
   window.App = new Frame.App({
     templates: JST,
-    routes: routes
+    routes: require('./config/routes')
   });
 }());

@@ -189,6 +189,16 @@ module.exports = function (grunt) {
             dest: 'controllers'
           },
           {
+            cwd: 'app/scripts/models',
+            src: ['**/*.js'],
+            dest: 'models'
+          },
+          {
+            cwd: 'app/scripts/collections',
+            src: ['**/*.js'],
+            dest: 'collections'
+          },
+          {
             cwd: 'app/scripts/views',
             src: ['**/*.js'],
             dest: 'views'
